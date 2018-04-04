@@ -50,7 +50,7 @@ int main() {
 	return 0;
 }
 
-bool chk() {
+bool chk() { 
 	if (flag) {
 		string aa = "";
 		for (int i = as - 1; i >= 0; i--) {
