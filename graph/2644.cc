@@ -1,49 +1,37 @@
 #include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <stack>
 #include <queue>
-#include <deque>
-#include <list>
-#include <map>
-#include <set>
-#include <cstring>
-#include <string>
-#include <cmath>
+#include <vector>
 using namespace std;
 
+queue<pair<int,int>>q;
 bool visit[101];
 vector<int>v[101];
-int n, x, y, m, res;
-int dfs(int s);
+int n, a, b, m, res;
 int main() {
-	cin >> n >> x >> y >> m;
+	cin >> n >> a >> b >> m;
 	for (int i = 0; i < m; i++) {
-		int a, b; cin >> a >> b;
-		v[a].push_back(b);
-		v[b].push_back(a);
+		int y, x; cin >> y >> x;
+		v[y].push_back(x);
+		v[x].push_back(y);
 	}
-	cout << dfs(x);
-	return 0;
-}
-int dfs(int s) {
-	visit[s] = true;
-	queue<pair<int, int>>q;
-	q.push(make_pair(s, 0));
-
+	q.push(make_pair(a,0));
 	while (!q.empty()) {
-		pair<int, int>now = q.front();
+		int now = q.front().first;
+		int cnt = q.front().second;
 		q.pop();
-		if (now.first == y) {
-			return now.second;
+		if (now == b) {
+			res = cnt;
+			break;
 		}
-		for (int i = 0; i < v[now.first].size(); i++) {
-			int next = v[now.first][i];
-			if (!visit[next]) {
-				visit[next] = true;
-				q.push(make_pair(next, now.second + 1));
-			}
+		if (visit[now]) continue;
+		visit[now] = true;
+		for (int i = 0; i < v[now].size(); i++) {
+			int next = v[now][i];
+			if (visit[next]) continue;
+			q.push(make_pair(next,cnt+1));
 		}
 	}
-	return -1;
+	if (res) cout << res << '\n';
+	else cout << -1 << '\n';
+	return 0;
 }
